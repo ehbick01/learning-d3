@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<svg width="960" height="600" fill="none" stroke-linejoin="round" stroke-linecap="round"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script src="js/rodents.js"></script>
+<script>
+
+var svg = d3.select("svg");
+
+var albersProjection = d3.geoAlbersUsa();
+
+var path = d3.geoPath();
+
+d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+  if (error) throw error;
+
+svg.append("g")
+  .selectAll("path")
+  .data(topojson.feature(us, us.objects.states).features)
+  .enter()
+  .append("path")
+  .attr("fill", "#f0f2f3")
+  .attr("d", path)
+  .append("title")
+    .text(function(d) { return d.id; });
+
+svg.append("g")
+  .selectAll("path")
+  .data( rodents_json.features )
+  .enter()
+  .append("path")
+  .attr( "fill", "#900" )
+  .attr("d", path)
+  .append("title")
+    .text(function(d) { return d.id; });
+
+svg.append("path")
+    .attr("stroke", "#A6A5A5")
+    .attr("stroke-width", 0.5)
+    .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+
+});
+
+</script>
