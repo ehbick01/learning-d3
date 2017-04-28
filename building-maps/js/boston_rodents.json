@@ -1,0 +1,10 @@
+var rodents_json = {
+"type": "FeatureCollection",
+
+"features": [
+{ "type": "Feature", "id": 1,  "geometry": { "type": "Point", "coordinates": [ -86.3740, 35.2830 ] } }
+,
+{ "type": "Feature", "id": 2, "geometry": { "type": "Point", "coordinates": [ -85.7585, 38.2527 ] } }
+
+]
+}

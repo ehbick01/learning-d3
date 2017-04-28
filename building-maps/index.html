@@ -1,46 +1,71 @@
-<!DOCTYPE html>
-<svg width="960" height="600" fill="none" stroke-linejoin="round" stroke-linecap="round"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="https://d3js.org/topojson.v2.min.js"></script>
-<script src="https://d3js.org/d3-array.v1.min.js"></script>
-<script src="https://d3js.org/d3-geo.v1.min.js"></script>
-<script src="js/rodents.js"></script>
-<script>
+<html>
+<head>
+  <title>A D3 map</title>
+  <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+  <script src="js/boston_neighborhoods.json"></script>
+  <script src="js/boston_rodents.json"></script>
 
-var svg = d3.select("svg");
+  <style>
+    #neighborhoods path{
+      fill: #ccc;
+    }
+    #rodents path{
+      fill: #900;
+      stroke: #999;
+    }
+    #rodents path:hover{
+      fill: black;
+    }
+    .incident {
+            fill: steelblue;
+    }
 
-var albersProjection = d3.geoAlbersUsa();
+  </style>
+</head>
+<body>
+  <script>
 
-var path = d3.geoPath();
+      var width = 700;
+      var height = 580;
 
-d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-  if (error) throw error;
+      var svg = d3.select( "body" )
+          .append( "svg" )
+          .attr( "width", width )
+          .attr( "height", height );
 
-svg.append("g")
-  .selectAll("path")
-  .data(topojson.feature(us, us.objects.states).features)
-  .enter()
-  .append("path")
-  .attr("fill", "#f0f2f3")
-  .attr("d", path)
-  .append("title")
-    .text(function(d) { return d.id; });
+      var g = svg.append( "g" );
 
-svg.append("g")
-  .selectAll("path")
-  .data( rodents_json.features )
-  .enter()
-  .append("path")
-  .attr( "fill", "#900" )
-  .attr("d", path)
-  .append("title")
-    .text(function(d) { return d.id; });
+      var albersProjection = d3.geoAlbers()
+          .scale( 1900 )
+          .rotate( [86,0] )
+          .center( [0, 38] )
+          .translate( [width/2,height/2] );
 
-svg.append("path")
-    .attr("stroke", "#A6A5A5")
-    .attr("stroke-width", 0.5)
-    .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+      var geoPath = d3.geoPath()
+          .projection( albersProjection );
 
-});
+      var rodents = svg.append( "g" );
 
-</script>
+      rodents.selectAll( "path" )
+          .data( rodents_json.features )
+          .enter()
+          .append( "path" )
+          .attr( "fill", "#900" )
+          .attr( "stroke", "#999" )
+          .attr( "d", geoPath )
+          .attr("class","incident");
+
+  //         svg.selectAll(".pin")
+  //   .data(places)
+  // .enter().append("circle", ".pin")
+  //   .attr("r", 5)
+  //   .attr("transform", function(d) {
+  //     return "translate(" + projection([
+  //       d.location.latitude,
+  //       d.location.longitude
+  //     ]) + ")"
+  //   })
+
+  </script>
+</body>
+</html>
