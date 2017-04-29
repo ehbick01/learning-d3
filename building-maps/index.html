@@ -25,27 +25,34 @@
 <body>
   <script>
 
+      // Define SVG height and width
       var width = 700;
       var height = 580;
 
+      // Build SVG element
       var svg = d3.select( "body" )
           .append( "svg" )
           .attr( "width", width )
           .attr( "height", height );
 
+      // Append graphical object 'g' to SVG
       var g = svg.append( "g" );
 
+      // Define mapping projection
       var albersProjection = d3.geoAlbers()
           .scale( 1900 )
           .rotate( [86,0] )
           .center( [0, 38] )
           .translate( [width/2,height/2] );
 
+      // Assign path variable
       var geoPath = d3.geoPath()
           .projection( albersProjection );
 
+      // Append 'rodents' object to SVG
       var rodents = svg.append( "g" );
 
+      // Plot rodents_json data and append to path
       rodents.selectAll( "path" )
           .data( rodents_json.features )
           .enter()
@@ -55,16 +62,9 @@
           .attr( "d", geoPath )
           .attr("class","incident");
 
-  //         svg.selectAll(".pin")
-  //   .data(places)
-  // .enter().append("circle", ".pin")
-  //   .attr("r", 5)
-  //   .attr("transform", function(d) {
-  //     return "translate(" + projection([
-  //       d.location.latitude,
-  //       d.location.longitude
-  //     ]) + ")"
-  //   })
+      // Move clusters between the dots - starting with the first point
+      
+
 
   </script>
 </body>

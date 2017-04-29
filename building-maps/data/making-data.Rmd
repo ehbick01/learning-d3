@@ -1,0 +1,47 @@
+---
+title: "Faking Volumes"
+output: html_notebook
+---
+
+```{r, load packages and set themes, echo = FALSE, message = FALSE}
+
+# Load packages
+library(tidyverse)
+library(ggthemes)
+library(extrafont)
+
+# Set plot theme
+theme_set(
+  theme_bw(base_family = 'Trebuchet MS', base_size = 12) +
+    theme(
+      plot.title = element_text(face = 'bold', hjust = 0),
+      text = element_text(colour = '#4e5c65'),
+      panel.background = element_rect('white'),
+      strip.background = element_rect('#f0f2f3', colour = 'white'),
+      plot.background = element_rect('white'),
+      panel.border = element_rect(colour = 'white'),
+      panel.grid.major.x = element_blank(),
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      legend.background = element_rect('white'),
+      legend.title = element_blank(),
+      legend.position = 'right',
+      legend.direction = 'vertical',
+      legend.key = element_blank(),
+      strip.text = element_text(face = 'bold', size = 10),
+      axis.text = element_text(face = 'bold', size = 9),
+      axis.title = element_blank(),
+      axis.ticks = element_blank()
+    )
+)
+
+```
+**Build fake volumes**
+
+```{r, make-data}
+fake_volumes <- data.frame('acct' = paste('acct_', seq(from = 1, to = 50, by = 1), sep = ''),
+                           'x' = round(runif(50, min = 0, max = 500),0),
+                           'y' = round(runif(50, min = 0, max = 500),0))
+
+write_csv(fake_volumes, 'fake-acct-data.csv')
+```
